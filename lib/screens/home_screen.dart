@@ -78,8 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CourseCard2(
-                            maleVoice: course1?.docs[0]['maleVoice'],
-                            femaleVoice: course1?.docs[0]['femaleVoice'],
+                            content: course1?.docs[0]['content'],
                             mediaQuery: _mediaQuery,
                             image: course1?.docs[0]['image'],
                             minTime: 3,
@@ -97,8 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           CourseCard2(
                             mediaQuery: _mediaQuery,
-                            maleVoice: course1?.docs[1]['maleVoice'],
-                            femaleVoice: course1?.docs[1]['femaleVoice'],
+                            content: course1?.docs[1]['content'],
                             image: course1?.docs[1]['image'],
                             minTime: 3,
                             maxTime: 10,
@@ -214,31 +212,36 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           width: _mediaQuery.width / 41,
                         ),
-                        SizedBox(
-                          width: _mediaQuery.width / 2,
-                          child: Text(
-                            musicName,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: neue,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
+                        courseNameG == null
+                            ? Container()
+                            : SizedBox(
+                                width: _mediaQuery.width / 2,
+                                child: Text(
+                                  courseNameG,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: neue,
+                                    fontSize: _mediaQuery.width / 28,
+                                    fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
                         Spacer(),
                         IconButton(
                           onPressed: () {
                             if (musicOn == false) {
                               setState(() {
-                                player.pause();
+                                tts.pause();
+                                play = Icons.play_arrow;
+
+                                musicOn = true;
                               });
                             } else if (musicOn == true) {
                               setState(() {
                                 musicOn = false;
                                 play = Icons.pause;
-                                player.resume();
+                                tts.resume();
                               });
                             }
                           },
@@ -329,8 +332,7 @@ class CourseCard2 extends StatelessWidget {
     required this.backgroundColor,
     required this.startColor,
     required this.startBackgroundColor,
-    required this.maleVoice,
-    required this.femaleVoice,
+    required this.content,
     required this.category,
     this.titleColor = Colors.white,
   })  : _mediaQuery = mediaQuery,
@@ -346,8 +348,7 @@ class CourseCard2 extends StatelessWidget {
   final Color backgroundColor;
   final Color startColor;
   final Color startBackgroundColor;
-  final String maleVoice;
-  final String femaleVoice;
+  final String content;
   final Color titleColor;
   final String category;
 
@@ -359,8 +360,7 @@ class CourseCard2 extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => CourseScreen(
-              maleVoice: maleVoice,
-              femaleVoice: femaleVoice,
+              content: content,
               image: image,
               courseName: courseName,
               listening: listening,
@@ -569,8 +569,7 @@ class CourseCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => CourseScreen(
-                femaleVoice: '',
-                maleVoice: '',
+                content: '',
                 image: image,
                 courseName: courseName,
                 listening: listening,

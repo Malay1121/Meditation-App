@@ -158,21 +158,23 @@ class _Musicv2State extends State<Musicv2> {
                         backgroundColor: greyTitle,
                         child: IconButton(
                           onPressed: () {
-                            if (isPlaying) {
+                            if (musicOn == false) {
                               setState(() {
-                                isPlaying = false;
+                                musicOn = true;
                               });
-                              stopMusic();
-                            } else {
+                              tts.pause();
+                            } else if (musicOn == true) {
+                              tts.resume();
                               setState(() {
-                                isPlaying = true;
+                                musicOn = false;
+                                play = Icons.pause;
                               });
-                              playMusic();
                             }
+                            ;
                           },
-                          icon: isPlaying
-                              ? Icon(Icons.pause)
-                              : Icon(Icons.play_arrow),
+                          icon: musicOn
+                              ? Icon(Icons.play_arrow)
+                              : Icon(Icons.pause),
                           iconSize: 35,
                         ),
                       ),

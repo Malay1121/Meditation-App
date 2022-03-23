@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:meditation_app/column_builder.dart';
 import 'package:meditation_app/constants.dart';
 import 'package:meditation_app/screens/home_screen.dart';
+import 'package:meditation_app/screens/sleep_home.dart';
 
 class MeditationScreen extends StatefulWidget {
   const MeditationScreen({Key? key}) : super(key: key);
@@ -149,8 +150,7 @@ class _MeditationScreenState extends State<MeditationScreen> {
                                           backgroundColor: purple,
                                           startColor: Color(0xFFFEFFFE),
                                           startBackgroundColor: greyTitle,
-                                          maleVoice: doc['maleVoice'],
-                                          femaleVoice: doc['femaleVoice'],
+                                          content: doc['content'],
                                           category: doc['category'],
                                         ),
                                       ],
@@ -216,8 +216,10 @@ class _CategoriesState extends State<Categories> {
             Navigator.pushReplacement(
               context,
               AwesomePageRoute(
-                  exitPage: MeditationScreen(),
-                  enterPage: MeditationScreen(),
+                  exitPage:
+                      widget.sleep == true ? SleepHome() : MeditationScreen(),
+                  enterPage:
+                      widget.sleep == true ? SleepHome() : MeditationScreen(),
                   transitionDuration: Duration(
                     milliseconds: 0,
                   ),

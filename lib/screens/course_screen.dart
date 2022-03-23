@@ -21,8 +21,7 @@ class CourseScreen extends StatefulWidget {
     required this.courseName,
     required this.favorites,
     required this.listening,
-    required this.femaleVoice,
-    required this.maleVoice,
+    required this.content,
     required this.category,
   }) : super(key: key);
 
@@ -30,8 +29,7 @@ class CourseScreen extends StatefulWidget {
   final String courseName;
   final int favorites;
   final int listening;
-  final String maleVoice;
-  final String femaleVoice;
+  final String content;
   final String category;
 
   @override
@@ -43,10 +41,6 @@ class _CourseScreenState extends State<CourseScreen> {
   void initState() {
     player = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
     setUp();
-    setState(() {
-      courseNameG = widget.courseName;
-      categoryG = widget.category;
-    });
   }
 
   setUp() {
@@ -85,8 +79,8 @@ class _CourseScreenState extends State<CourseScreen> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage(
-                            'assets/course_cover1.png',
+                          image: NetworkImage(
+                            widget.image,
                           ),
                         ),
                       ),
@@ -290,9 +284,10 @@ class _CourseScreenState extends State<CourseScreen> {
                                   title: 'Focus Attention',
                                   time: '10 mins',
                                   locked: false,
-                                  text: widget.maleVoice,
+                                  text: widget.content,
                                   lang: 'en-US',
                                   courseName: widget.courseName,
+                                  categoryName: widget.category,
                                 ),
                               ],
                             ),
@@ -303,9 +298,10 @@ class _CourseScreenState extends State<CourseScreen> {
                                   title: 'Focus Attention',
                                   time: '10 mins',
                                   locked: false,
-                                  text: widget.femaleVoice,
+                                  text: widget.content,
                                   lang: 'en-GB',
                                   courseName: widget.courseName,
+                                  categoryName: widget.category,
                                 ),
                               ],
                             ),
@@ -349,6 +345,7 @@ class CourseSteps extends StatefulWidget {
     required this.lang,
     this.locked = true,
     required this.courseName,
+    required this.categoryName,
   })  : _mediaQuery = mediaQuery,
         super(key: key);
 
@@ -359,6 +356,7 @@ class CourseSteps extends StatefulWidget {
   final String text;
   final String lang;
   final String courseName;
+  final String categoryName;
 
   State<CourseSteps> createState() => _CourseStepsState();
 }
@@ -377,26 +375,36 @@ class _CourseStepsState extends State<CourseSteps> {
             leading: GestureDetector(
               onTap: () async {
                 setState(() {
-                  audioLinkG = widget.text;
-                  musicName = widget.courseName;
+                  courseNameG = widget.courseName;
+                  categoryG = widget.categoryName;
                 });
-                await player.stop;
-                await player.play(widget.text);
+                // setState(() {
+                //   audioLinkG = widget.text;
+                //   musicName = widget.courseName;
+                // });
+                // await player.stop;
+                // await player.play(widget.text);
+                if (widget.lang == 'en-GB') {
+                  tts.setPitch(2);
+                  tts.setRate(1.2);
+                }
+                await tts.setLanguage(widget.lang);
+                await tts.speak(widget.text);
 
-                // if (musicOn == false) {
-                //   setState(() {
-                //     musicOn = true;
-                //     play = Icons.play_arrow;
-                //     tts.pause();
-                //   });
-                // } else if (musicOn == true) {
-                //   setState(() {
-                //     musicOn = false;
-                //     play = Icons.pause;
+                if (musicOn == false) {
+                  setState(() {
+                    musicOn = true;
+                    play = Icons.play_arrow;
+                    tts.pause();
+                  });
+                } else if (musicOn == true) {
+                  setState(() {
+                    musicOn = false;
+                    play = Icons.pause;
 
-                //     tts.resume();
-                //   });
-                // }
+                    tts.resume();
+                  });
+                }
               },
               child: CircleAvatar(
                 backgroundColor:
@@ -419,7 +427,7 @@ class _CourseStepsState extends State<CourseSteps> {
               style: TextStyle(
                 color: greyTitle,
                 fontFamily: neue,
-                fontSize: widget._mediaQuery.width / 25.87500,
+                fontSize: widget._mediaQuery.width / 30.87500,
               ),
             ),
             subtitle: Text(

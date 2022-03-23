@@ -83,7 +83,7 @@ class _SleepHomeState extends State<SleepHome> {
                           ),
                           Categories(
                             mediaQuery: _mediaQuery,
-                            categoryName: 'Advice',
+                            categoryName: 'Acrostic',
                             icon: Icons.favorite_border,
                             sleep: true,
                           ),
@@ -132,10 +132,10 @@ class _SleepHomeState extends State<SleepHome> {
                     StreamBuilder<QuerySnapshot>(
                       stream: category == 'All'
                           ? FirebaseFirestore.instance
-                              .collection('courses')
+                              .collection('music')
                               .snapshots()
                           : FirebaseFirestore.instance
-                              .collection('courses')
+                              .collection('music')
                               .where('category', isEqualTo: category)
                               .snapshots(),
                       builder: (context, snapshot) {
@@ -156,20 +156,17 @@ class _SleepHomeState extends State<SleepHome> {
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      CourseCard2(
+                                      CourseCard3(
                                         mediaQuery: _mediaQuery,
-                                        image: doc['image'],
                                         minTime: doc['minTime'],
                                         maxTime: doc['maxTime'],
                                         courseName: doc['name'],
                                         favorites: doc['favorites'],
                                         listening: doc['listening'],
-                                        backgroundColor: purple,
-                                        startColor: Color(0xFFFEFFFE),
-                                        startBackgroundColor: greyTitle,
                                         maleVoice: doc['maleVoice'],
                                         femaleVoice: doc['femaleVoice'],
                                         category: doc['category'],
+                                        img: doc['image'],
                                       ),
                                     ],
                                   );
@@ -198,36 +195,26 @@ class CourseCard3 extends StatelessWidget {
   const CourseCard3({
     Key? key,
     required Size mediaQuery,
-    required this.image,
     required this.minTime,
     required this.maxTime,
     required this.courseName,
     required this.favorites,
     required this.listening,
-    required this.backgroundColor,
-    required this.startColor,
-    required this.startBackgroundColor,
     required this.maleVoice,
     required this.femaleVoice,
     required this.category,
     required this.img,
-    this.titleColor = Colors.white,
   })  : _mediaQuery = mediaQuery,
         super(key: key);
 
   final Size _mediaQuery;
-  final String image;
   final int minTime;
   final int maxTime;
   final String courseName;
   final int favorites;
   final int listening;
-  final Color backgroundColor;
-  final Color startColor;
-  final Color startBackgroundColor;
   final String maleVoice;
   final String femaleVoice;
-  final Color titleColor;
   final String category;
   final int img;
 
@@ -239,9 +226,9 @@ class CourseCard3 extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => CourseScreen(
-              maleVoice: maleVoice,
-              femaleVoice: femaleVoice,
-              image: image,
+              content: '',
+              image:
+                  'https://firebasestorage.googleapis.com/v0/b/meditation-app-e4c4c.appspot.com/o/Course%20Cards%2Fcourse_sleep.png?alt=media&token=fa0ac619-7eb2-486f-826d-39215b6f7ab8',
               courseName: courseName,
               listening: listening,
               favorites: favorites,
@@ -252,108 +239,52 @@ class CourseCard3 extends StatelessWidget {
       },
       child: Tooltip(
         message: courseName,
-        child: Container(
-          width: _mediaQuery.width / 2.33898305,
-          height: _mediaQuery.height / 4.26666667 * 1.4,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: NetworkImage('$image'),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: _mediaQuery.width / 2.33898305,
+              height: _mediaQuery.height / 7.28870089 * 1.4,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/music_image$img.png'),
+                ),
+              ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    image: DecorationImage(
-                        image: AssetImage('assets/music_image$img.png'))),
+            SizedBox(
+              height: _mediaQuery.height / 81.4545455 * 1.4,
+            ),
+            Text(
+              courseName,
+              style: TextStyle(
+                color: Color(0xFFE6E7F2),
+                fontFamily: neue,
+                fontWeight: FontWeight.w700,
+                fontSize: _mediaQuery.width / 23,
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: _mediaQuery.width / 27.6,
-                    top: _mediaQuery.height / 12.5411765 * 1.4),
-                child: SizedBox(
-                  height: _mediaQuery.height / 20.4 * 1.4,
-                  child: Text(
-                    courseName,
-                    style: TextStyle(
-                      color: titleColor,
-                      fontFamily: neue,
-                      fontWeight: FontWeight.w700,
-                      fontSize: _mediaQuery.width / 23,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    maxLines: 2,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: _mediaQuery.height / 94.3157895 * 1.4,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: _mediaQuery.width / 27.6,
-                ),
-                child: Text(
-                  'COURSE'.toUpperCase(),
+            ),
+            Row(
+              children: [
+                Text(
+                  '$minTime - $maxTime MIN ',
                   style: TextStyle(
-                    color: titleColor,
+                    color: Color(0xFF98A1BD),
+                    fontFamily: neue,
+                    fontWeight: FontWeight.w400,
+                    fontSize: _mediaQuery.width / 37.6363636,
                   ),
                 ),
-              ),
-              Spacer(),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: _mediaQuery.width / 27.6,
-                  bottom: _mediaQuery.height / 34.4615385,
+                Text(
+                  'music'.toUpperCase(),
+                  style: TextStyle(
+                    color: Color(0xFF98A1BD),
+                  ),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: _mediaQuery.width / 2.81632653,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '$minTime-$maxTime MIN',
-                            style: TextStyle(
-                              fontFamily: neue,
-                              fontSize: _mediaQuery.width / 37.6363636,
-                              color: Color(0xFFEBEAEC),
-                            ),
-                          ),
-                          Container(
-                            width: _mediaQuery.width / 5.91428571,
-                            height: _mediaQuery.width / 11.8285714,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: startBackgroundColor),
-                            child: Center(
-                              child: Text(
-                                'START'.toUpperCase(),
-                                style: TextStyle(
-                                  color: startColor,
-                                  fontSize: _mediaQuery.width / 34.5,
-                                  fontFamily: neue,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );
