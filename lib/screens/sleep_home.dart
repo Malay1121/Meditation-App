@@ -233,6 +233,7 @@ class CourseCard3 extends StatelessWidget {
               listening: listening,
               favorites: favorites,
               category: category,
+              sleep: true,
             ),
           ),
         );

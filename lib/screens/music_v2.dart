@@ -235,7 +235,9 @@ class _Musicv2State extends State<Musicv2> {
 
   playMusic() {
     // t play the Audio
-    player.play(audioLinkG);
+    player.play(
+      'https://firebasestorage.googleapis.com/v0/b/meditation-app-e4c4c.appspot.com/o/meditation_background.mp3?alt=media&token=a08a59e8-5cbe-48ec-8957-2aea77ee5330',
+    );
   }
 
   stopMusic() {

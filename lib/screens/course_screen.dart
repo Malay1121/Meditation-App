@@ -15,15 +15,16 @@ Duration musicLength = Duration();
 AudioPlayer audio = AudioPlayer();
 
 class CourseScreen extends StatefulWidget {
-  CourseScreen({
-    Key? key,
-    required this.image,
-    required this.courseName,
-    required this.favorites,
-    required this.listening,
-    required this.content,
-    required this.category,
-  }) : super(key: key);
+  CourseScreen(
+      {Key? key,
+      required this.image,
+      required this.courseName,
+      required this.favorites,
+      required this.listening,
+      required this.content,
+      required this.category,
+      this.sleep = false})
+      : super(key: key);
 
   final String image;
   final String courseName;
@@ -31,6 +32,7 @@ class CourseScreen extends StatefulWidget {
   final int listening;
   final String content;
   final String category;
+  final bool sleep;
 
   @override
   _CourseScreenState createState() => _CourseScreenState();
@@ -43,7 +45,7 @@ class _CourseScreenState extends State<CourseScreen> {
     setUp();
   }
 
-  setUp() {
+  setUp() async {
     player.onAudioPositionChanged.listen((d) {
       if (mounted)
         setState(() {
@@ -80,7 +82,9 @@ class _CourseScreenState extends State<CourseScreen> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            widget.image,
+                            widget.sleep == true
+                                ? 'https://firebasestorage.googleapis.com/v0/b/meditation-app-e4c4c.appspot.com/o/Course%20Cards%2Fsleep_course.png?alt=media&token=6faa3cb4-8dab-42a8-8056-cfe8d773664c'
+                                : 'https://firebasestorage.googleapis.com/v0/b/meditation-app-e4c4c.appspot.com/o/Course%20Cards%2Fcourse_cover1.png?alt=media&token=836efc77-9b2b-415e-9196-b7d8b9800aa7',
                           ),
                         ),
                       ),
@@ -231,7 +235,7 @@ class _CourseScreenState extends State<CourseScreen> {
                         height: _mediaQuery.height / 20.45,
                       ),
                       Text(
-                        'Pick a Narrator',
+                        'Pick a Narator',
                         style: TextStyle(
                           color: greyTitle,
                           fontSize: _mediaQuery.width / 20.7,
@@ -321,7 +325,8 @@ class _CourseScreenState extends State<CourseScreen> {
 
   playMusic() {
     // t play the Audio
-    player.play(audioLinkG);
+    player.play(
+        'https://firebasestorage.googleapis.com/v0/b/meditation-app-e4c4c.appspot.com/o/meditation_background.mp3?alt=media&token=a08a59e8-5cbe-48ec-8957-2aea77ee5330');
   }
 
   stopMusic() {
@@ -378,12 +383,10 @@ class _CourseStepsState extends State<CourseSteps> {
                   courseNameG = widget.courseName;
                   categoryG = widget.categoryName;
                 });
-                // setState(() {
-                //   audioLinkG = widget.text;
-                //   musicName = widget.courseName;
-                // });
-                // await player.stop;
-                // await player.play(widget.text);
+                await player.stop;
+                await player.setVolume(0.5);
+                await player.play(
+                    'https://firebasestorage.googleapis.com/v0/b/meditation-app-e4c4c.appspot.com/o/meditation_background.mp3?alt=media&token=a08a59e8-5cbe-48ec-8957-2aea77ee5330');
                 if (widget.lang == 'en-GB') {
                   tts.setPitch(2);
                   tts.setRate(1.2);

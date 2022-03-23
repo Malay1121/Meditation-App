@@ -99,13 +99,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  expandable_widgets:
-    dependency: "direct main"
-    description:
-      name: expandable_widgets
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   fake_async:
     dependency: transitive
     description:
@@ -228,13 +221,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  flutter_tts:
-    dependency: "direct main"
-    description:
-      name: flutter_tts
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.3.3"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

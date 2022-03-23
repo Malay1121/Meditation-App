@@ -1,6 +1,5 @@
 import 'package:awesome_page_transitions/awesome_page_transitions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expandable_widgets/expandable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:meditation_app/constants.dart';
 import 'package:meditation_app/screens/course_screen.dart';
